@@ -1,1 +1,210 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap");
+
+:root {
+  --neon-green: #00ff41;
+  --neon-blue: #00d4ff;
+  --neon-purple: #9d00ff;
+  --dark-bg: #0a0a0a;
+  --darker-bg: #050505;
+  --terminal-green: #00ff00;
+  --matrix-green: #00ff41;
+  --cyber-orange: #ff6b35;
+}
+
+* {
+  font-family: "Share Tech Mono", monospace;
+}
+
+body {
+  background: var(--dark-bg);
+  color: var(--terminal-green);
+  overflow-x: hidden;
+}
+
+/* Robotic animations */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes matrix {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Custom utility classes */
+.robotic-text {
+  font-family: "Orbitron", monospace;
+  text-shadow: 0 0 10px var(--neon-green);
+}
+
+.terminal-text {
+  font-family: "Share Tech Mono", monospace;
+  color: var(--terminal-green);
+}
+
+.neon-border {
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 20px var(--neon-green);
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px var(--neon-green);
+}
+
+.cyber-button {
+  background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+  border: none;
+  color: var(--dark-bg);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 255, 65, 0.4);
+}
+
+.cyber-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+.terminal-input {
+  background: var(--darker-bg);
+  border: 2px solid var(--neon-green);
+  color: var(--terminal-green);
+  font-family: "Share Tech Mono", monospace;
+}
+
+.terminal-input:focus {
+  outline: none;
+  box-shadow: 0 0 20px var(--neon-green);
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--neon-green),
+    transparent
+  );
+  animation: scanline 3s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--dark-bg);
+  overflow: hidden;
+  z-index: -1;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  color: var(--matrix-green);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 14px;
+  animation: matrix 10s linear infinite;
+  opacity: 0.1;
+}
+
+.glitch-text {
+  animation: glitch 0.3s infinite;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--neon-green);
+  white-space: nowrap;
+  animation: typewriter 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--neon-green);
+  }
+}

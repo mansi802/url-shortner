@@ -37,66 +37,69 @@ const RegisterForm = ({ state }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      >
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Create an Account
+    <div className="w-full">
+      <div className="text-center mb-6">
+        <h2 className="robotic-text text-3xl font-black mb-2 text-blue-400">
+          USER REGISTRATION
         </h2>
+        <div className="terminal-text text-sm text-gray-400">
+          * CREATE NEW USER PROFILE IN SYSTEM *
+        </div>
+      </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="mb-6 bg-red-900/50 border border-red-500 text-red-400 p-4 rounded-md terminal-text">
+          <div className="font-bold text-red-300">REGISTRATION ERROR:</div>
+          {error}
+        </div>
+      )}
 
-        <div className="mb-4">
+      <div className="space-y-6">
+        <div>
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="terminal-text block text-lg font-bold mb-3 text-cyan-400"
             htmlFor="name"
           >
-            Full Name
+            [NAME] USER IDENTIFIER:
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="terminal-input w-full px-4 py-3 rounded-md text-lg"
             id="name"
             type="text"
-            placeholder="Full Name"
+            placeholder="Enter full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
 
-        <div className="mb-4">
+        <div>
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="terminal-text block text-lg font-bold mb-3 text-purple-400"
             htmlFor="email"
           >
-            Email
+            [EMAIL] COMMUNICATION ADDRESS:
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="terminal-input w-full px-4 py-3 rounded-md text-lg"
             id="email"
             type="email"
-            placeholder="Email"
+            placeholder="user@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
 
-        <div className="mb-4">
+        <div>
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="terminal-text block text-lg font-bold mb-3 text-yellow-400"
             htmlFor="password"
           >
-            Password
+            [PASSWORD] SECURITY KEY (MIN 6 CHARS):
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="terminal-input w-full px-4 py-3 rounded-md text-lg"
             id="password"
             type="password"
             placeholder="******************"
@@ -107,29 +110,34 @@ const RegisterForm = ({ state }) => {
           />
         </div>
 
-        <div className="flex items-center justify-between">
-          <button
-            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            type="submit"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Creating..." : "Create Account"}
-          </button>
-        </div>
+        <button
+          className={`cyber-button w-full py-4 text-lg font-bold ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          type="submit"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+              CREATING PROFILE...
+            </div>
+          ) : (
+            "CREATE USER PROFILE"
+          )}
+        </button>
 
-        <div className="text-center mt-4">
-          <p className="cursor-pointer text-sm text-gray-600">
-            Already have an account?{" "}
+        <div className="text-center mt-6">
+          <div className="terminal-text text-sm text-gray-400">
+            <span className="text-cyan-400">EXISTING USER?</span>{" "}
             <span
               onClick={() => state(true)}
-              className="text-blue-500 hover:text-blue-700"
+              className="text-green-400 hover:text-green-300 cursor-pointer font-bold"
             >
-              Sign In
+              ACCESS SYSTEM
             </span>
-          </p>
+          </div>
         </div>
       </div>
     </div>

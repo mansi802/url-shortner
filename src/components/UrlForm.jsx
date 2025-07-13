@@ -9,38 +9,39 @@ const UrlForm = () => {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(null);
   const [customSlug, setCustomSlug] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const handleSubmit = async () => {
+    setIsProcessing(true);
     try {
       const shortUrl = await createShortUrl(url, customSlug);
       setShortUrl(shortUrl);
-      //used for invalidating queries to refetch user URLs
       queryClient.invalidateQueries({ queryKey: ["userUrls"] });
       setError(null);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl);
     setCopied(true);
-
-    // Reset the copied state after 2 seconds
     setTimeout(() => {
       setCopied(false);
     }, 2000);
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
         <label
           htmlFor="url"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="terminal-text block text-lg font-bold mb-3 text-cyan-400"
         >
-          Enter your URL
+          [URL INPUT] ENTER TARGET URL:
         </label>
         <input
           type="url"
@@ -49,28 +50,41 @@ const UrlForm = () => {
           onInput={(event) => setUrl(event.target.value)}
           placeholder="https://example.com"
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="terminal-input w-full px-4 py-3 rounded-md text-lg"
         />
       </div>
+
       <button
         onClick={handleSubmit}
-        type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+        disabled={isProcessing}
+        className={`cyber-button w-full py-4 text-lg font-bold ${
+          isProcessing ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
-        Shorten URL
+        {isProcessing ? (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
+            PROCESSING...
+          </div>
+        ) : (
+          "COMPRESS URL"
+        )}
       </button>
+
       {error && (
-        <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
+        <div className="bg-red-900/50 border border-red-500 text-red-400 p-4 rounded-md terminal-text">
+          <div className="font-bold text-red-300">ERROR:</div>
           {error}
         </div>
       )}
+
       {isAuthenticated && (
-        <div className="mt-4">
+        <div className="mt-6">
           <label
             htmlFor="customSlug"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="terminal-text block text-lg font-bold mb-3 text-purple-400"
           >
-            Custom URL (optional)
+            [OPTIONAL] CUSTOM IDENTIFIER:
           </label>
           <input
             type="text"
@@ -78,30 +92,35 @@ const UrlForm = () => {
             value={customSlug}
             onChange={(event) => setCustomSlug(event.target.value)}
             placeholder="Enter custom slug"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="terminal-input w-full px-4 py-3 rounded-md text-lg"
           />
         </div>
       )}
+
       {shortUrl && (
-        <div className="mt-6">
-          <h2 className="text-lg font-semibold mb-2">Your shortened URL:</h2>
-          <div className="flex items-center">
+        <div className="mt-8 bg-green-900/20 border border-green-500 p-6 rounded-lg">
+          <h2 className="terminal-text text-xl font-bold mb-4 text-green-400">
+            [SUCCESS] COMPRESSED URL GENERATED:
+          </h2>
+          <div className="flex items-center space-x-2">
             <input
               type="text"
               readOnly
               value={shortUrl}
-              className="flex-1 p-2 border border-gray-300 rounded-l-md bg-gray-50"
+              className="terminal-input flex-1 p-3 rounded-l-md text-lg bg-black/50"
             />
             <button
               onClick={handleCopy}
-              className={`px-4 py-2 rounded-r-md transition-colors duration-200 ${
-                copied
-                  ? "bg-green-500 text-white hover:bg-green-600"
-                  : "bg-gray-200 hover:bg-gray-300"
+              className={`px-6 py-3 rounded-r-md transition-all duration-300 font-bold ${
+                copied ? "bg-green-600 text-white neon-glow" : "cyber-button"
               }`}
             >
-              {copied ? "Copied!" : "Copy"}
+              {copied ? "COPIED!" : "COPY"}
             </button>
+          </div>
+          <div className="mt-3 text-sm text-gray-400 terminal-text">
+            <span className="text-cyan-400">STATUS:</span> URL COMPRESSION
+            COMPLETE
           </div>
         </div>
       )}
