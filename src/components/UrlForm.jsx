@@ -16,7 +16,7 @@ const UrlForm = () => {
     setIsProcessing(true);
     try {
       const shortUrl = await createShortUrl(url, customSlug);
-      setShortUrl(shortUrl);
+      setShortUrl(import.meta.env.VITE_API_URL + shortUrl);
       queryClient.invalidateQueries({ queryKey: ["userUrls"] });
       setError(null);
     } catch (err) {
